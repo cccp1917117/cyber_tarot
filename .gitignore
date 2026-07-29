@@ -1,0 +1,9 @@
+.env
+.DS_Store
+Thumbs.db
+
+# Runtime image files are stored outside Git by default.
+storage/prompts/*
+storage/tarot/*
+!storage/prompts/.gitkeep
+!storage/tarot/.gitkeep

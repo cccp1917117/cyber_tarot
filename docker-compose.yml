@@ -1,0 +1,26 @@
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cyber_tarot}
+      POSTGRES_USER: ${POSTGRES_USER:-cyber_tarot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cyber_tarot-dev}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-cyber_tarot} -d ${POSTGRES_DB:-cyber_tarot}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql:ro
+      - ./db/seeds/001_association_terms.sql:/docker-entrypoint-initdb.d/002_association_terms.sql:ro
+
+volumes:
+  postgres_data:
