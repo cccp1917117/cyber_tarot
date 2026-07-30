@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyber-tarot.local/schemas/tarot-card.schema.json",
+  "title": "Cyber Tarot Card v1",
+  "description": "一张具体套牌中的塔罗牌交换格式。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "deck_slug",
+    "card_code",
+    "name",
+    "arcana_type",
+    "sequence_no",
+    "meanings",
+    "image"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "deck_slug": {
+      "$ref": "#/$defs/slug"
+    },
+    "card_code": {
+      "$ref": "#/$defs/cardCode"
+    },
+    "archetype_code": {
+      "$ref": "#/$defs/cardCode"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "localized_names": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "propertyNames": {
+        "pattern": "^[a-z]{2}(?:-[A-Z]{2})?$"
+      }
+    },
+    "arcana_type": {
+      "enum": [
+        "major",
+        "minor",
+        "custom"
+      ]
+    },
+    "major_number": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 21
+    },
+    "suit_code": {
+      "enum": [
+        "wands",
+        "cups",
+        "swords",
+        "pentacles"
+      ]
+    },
+    "rank_code": {
+      "enum": [
+        "ace",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "page",
+        "knight",
+        "queen",
+        "king"
+      ]
+    },
+    "sequence_no": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32767
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "meanings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "upright",
+        "reversed"
+      ],
+      "properties": {
+        "upright": {
+          "$ref": "#/$defs/orientationMeaning"
+        },
+        "reversed": {
+          "$ref": "#/$defs/orientationMeaning"
+        }
+      }
+    },
+    "image": {
+      "$ref": "#/$defs/image"
+    },
+    "associations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/association"
+      },
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "arcana_type": {
+            "const": "major"
+          }
+        },
+        "required": [
+          "arcana_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "archetype_code",
+          "major_number"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "suit_code"
+              ]
+            },
+            {
+              "required": [
+                "rank_code"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "arcana_type": {
+            "const": "minor"
+          }
+        },
+        "required": [
+          "arcana_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "archetype_code",
+          "suit_code",
+          "rank_code"
+        ],
+        "not": {
+          "required": [
+            "major_number"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "arcana_type": {
+            "const": "custom"
+          }
+        },
+        "required": [
+          "arcana_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "card_code": {
+            "pattern": "^custom-[a-z0-9]+(?:[a-z0-9-]*[a-z0-9])?$"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[a-z0-9_-]*[a-z0-9])?$",
+      "maxLength": 120
+    },
+    "cardCode": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[a-z0-9-]*[a-z0-9])?$",
+      "maxLength": 120
+    },
+    "orientationMeaning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "keywords",
+        "meaning"
+      ],
+      "properties": {
+        "keywords": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          }
+        },
+        "meaning": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storage_key",
+        "mime_type",
+        "byte_size",
+        "width_px",
+        "height_px",
+        "sha256"
+      ],
+      "properties": {
+        "storage_key": {
+          "type": "string",
+          "pattern": "^tarot/[a-z0-9][a-z0-9_/-]*\\.png$",
+          "maxLength": 500
+        },
+        "mime_type": {
+          "const": "image/png"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "width_px": {
+          "type": "integer",
+          "minimum": 1200
+        },
+        "height_px": {
+          "type": "integer",
+          "minimum": 1800
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "alt_text": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "association": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taxonomy_code",
+        "term_code"
+      ],
+      "properties": {
+        "taxonomy_code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "term_code": {
+          "$ref": "#/$defs/slug"
+        },
+        "relation_code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "default": "associated_with"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}

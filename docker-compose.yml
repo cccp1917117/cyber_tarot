@@ -20,7 +20,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql:ro
-      - ./db/seeds/001_association_terms.sql:/docker-entrypoint-initdb.d/002_association_terms.sql:ro
+      - ./db/migrations/002_standardize_tarot_cards.sql:/docker-entrypoint-initdb.d/002_standardize_tarot_cards.sql:ro
+      - ./db/migrations/003_add_tarot_deck_backs.sql:/docker-entrypoint-initdb.d/003_add_tarot_deck_backs.sql:ro
+      - ./db/migrations/004_switch_media_to_png.sql:/docker-entrypoint-initdb.d/004_switch_media_to_png.sql:ro
+      - ./db/migrations/005_add_divination_methods.sql:/docker-entrypoint-initdb.d/005_add_divination_methods.sql:ro
+      - ./db/seeds/001_association_terms.sql:/docker-entrypoint-initdb.d/101_association_terms.sql:ro
+      - ./db/seeds/002_rws_archetypes.sql:/docker-entrypoint-initdb.d/102_rws_archetypes.sql:ro
+      - ./db/seeds/003_divination_methods.sql:/docker-entrypoint-initdb.d/103_divination_methods.sql:ro
 
 volumes:
   postgres_data:
