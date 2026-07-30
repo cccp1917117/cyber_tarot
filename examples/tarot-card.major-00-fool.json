@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "deck_slug": "rider-waite-smith",
+  "card_code": "major-00",
+  "archetype_code": "major-00",
+  "name": "愚者",
+  "localized_names": {
+    "zh-CN": "愚者",
+    "en-US": "The Fool"
+  },
+  "arcana_type": "major",
+  "major_number": 0,
+  "sequence_no": 0,
+  "description": "旅程开始前的自由、好奇与未知。",
+  "meanings": {
+    "upright": {
+      "keywords": [
+        "开始",
+        "自由",
+        "自发",
+        "信任"
+      ],
+      "meaning": "带着开放的心踏出第一步，允许经验在行动中展开。"
+    },
+    "reversed": {
+      "keywords": [
+        "鲁莽",
+        "迟疑",
+        "逃避",
+        "风险"
+      ],
+      "meaning": "重新评估风险与准备程度，不要把自由误解为毫无边界。"
+    }
+  },
+  "image": {
+    "storage_key": "tarot/rider-waite-smith/major-00.png",
+    "mime_type": "image/png",
+    "byte_size": 245760,
+    "width_px": 1200,
+    "height_px": 1800,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "alt_text": "愚者站在悬崖边，肩负行囊，仰望天空。",
+    "attribution": "示例数据，请替换为实际版权信息。"
+  },
+  "associations": [
+    {
+      "taxonomy_code": "zodiac",
+      "term_code": "aquarius",
+      "relation_code": "resonates_with",
+      "weight": 0.7
+    },
+    {
+      "taxonomy_code": "mbti",
+      "term_code": "enfp",
+      "relation_code": "resonates_with",
+      "weight": 0.65
+    }
+  ],
+  "metadata": {
+    "locale": "zh-CN"
+  }
+}
